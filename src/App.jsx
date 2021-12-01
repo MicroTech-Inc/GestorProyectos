@@ -18,6 +18,9 @@ import IndexInscripciones from 'pages/inscripciones';
 import IndexProyectos from 'pages/proyectos';
 import IndexAvances from 'pages/avances';
 import IndexPerfil from 'pages/Perfil';
+import AvanceDetalles from 'pages/avances/AvanceDetalles';
+import AvanceRegistro from 'pages/avances/AvanceRegistro';
+import AvanceEditar from 'pages/avances/AvanceEditar';
 
 
 // import PrivateRoute from 'components/PrivateRoute';
@@ -83,6 +86,9 @@ function App() {
               <Route path='/inscripciones' element={<IndexInscripciones />} />
               <Route path='/proyectos' element={<IndexProyectos />} />
               <Route path='/avances' element={<IndexAvances />} />
+              <Route path='/avances/registro' element={<AvanceRegistro />} />
+              <Route path='/avances/editar/:_id' element={<AvanceEditar />} />
+              <Route path='/avances/:_id' element={<AvanceDetalles />} />
               <Route path='/usuarios' element={<IndexUsuarios />} />
               <Route path='/usuarios/editar/:_id' element={<EditarUsuario />} />              
               <Route path='/perfil' element={<IndexPerfil />} />              
