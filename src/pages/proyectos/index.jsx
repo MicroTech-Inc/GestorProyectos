@@ -24,10 +24,10 @@ const IndexProyectos = () => {
 
   return (
     <div className="flex flex-col justify-start mt-28 ml-14">
-      <h2 className="text-2xl font-bold mb-6">Listado de Proyectos</h2>
-      {/* <div>
+      <div className="flex flex-shrink-0">
+        <h2 className="text-2xl font-bold mb-6">Listado de Proyectos</h2>
         <i class="fas fa-folder-plus text-blue-900 hover:text-blue-400 cursor-pointer"></i>
-      </div> */}
+      </div>
       <table className="tabla">
         <thead>
           <tr>
@@ -55,12 +55,12 @@ const IndexProyectos = () => {
                     <Link to={`/proyectos/ver/${u._id}`}>
                       <i class="far fa-eye text-blue-900 hover:text-blue-400 cursor-pointer"></i>
                     </Link>
-                    <PrivateComponent roleList={'LIDER'}>
-                    <Link to={`/proyectos/editar/${u._id}`}>
-                      <i className="fas fa-pen text-yellow-600 hover:text-yellow-400 cursor-pointer pl-4" />
-                    </Link>
+                    <PrivateComponent roleList={["ADMINISTRADOR", "LIDER"]}>
+                      <Link to={`/proyectos/editar/${u._id}`}>
+                        <i className="fas fa-pen text-yellow-600 hover:text-yellow-400 cursor-pointer pl-4" />
+                      </Link>
                     </PrivateComponent>
-                    <PrivateComponent roleList={'ESTUDIANTE'}>
+                    <PrivateComponent roleList={"ESTUDIANTE"}>
                       <Link to={u._id}>
                         <i className="fas fa-user-plus text-blue-900 hover:text-blue-400 cursor-pointer pl-4"></i>
                       </Link>

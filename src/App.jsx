@@ -20,6 +20,7 @@ import IndexAvances from 'pages/avances';
 import IndexPerfil from 'pages/Perfil';
 import EditarProyecto from 'pages/proyectos/editar';
 import VerProyecto from 'pages/proyectos/verProyecto';
+import CrearProyecto from 'pages/proyectos/crear';
 
 
 // import PrivateRoute from 'components/PrivateRoute';
@@ -86,6 +87,7 @@ function App() {
               <Route path='/proyectos' element={<IndexProyectos />} />
               <Route path='/proyectos/editar/:_id' element={<EditarProyecto />} />
               <Route path='/proyectos/ver/:_id' element={<VerProyecto />} />
+              <Route path='/proyectos/crear' element={<CrearProyecto />} />
               <Route path='/avances' element={<IndexAvances />} />
               <Route path='/usuarios' element={<IndexUsuarios />} />
               <Route path='/usuarios/editar/:_id' element={<EditarUsuario />} />              
