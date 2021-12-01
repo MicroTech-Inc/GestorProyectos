@@ -3,7 +3,7 @@ import { gql } from "@apollo/client";
 const EDITAR_PROYECTO = gql`
   mutation EditarProyecto(
     $_id: String!
-    $nombre: String!
+    $nombre: String! 
     $presupuesto: Float!
     $fechaInicio: Date!
     $fechaFin: Date!

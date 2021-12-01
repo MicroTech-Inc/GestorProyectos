@@ -24,7 +24,7 @@ const IndexProyectos = () => {
 
   return (
     <div className="flex flex-col justify-start mt-28 ml-14">
-      <div className="flex flex-shrink-0">
+      <div className="flex flex-col-reverse">
         <h2 className="text-2xl font-bold mb-6">Listado de Proyectos</h2>
         <i class="fas fa-folder-plus text-blue-900 hover:text-blue-400 cursor-pointer"></i>
       </div>
