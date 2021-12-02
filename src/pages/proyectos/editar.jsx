@@ -9,6 +9,8 @@ import { toast } from "react-toastify";
 import { EDITAR_PROYECTO } from "graphql/proyectos/mutations";
 import DropDown from "components/Dropdown";
 import { Enum_EstadoProyecto, Enum_FaseProyecto } from "utils/enums";
+import PrivateComponent from "components/PrivateComponent";
+import Input from "components/Input";
 
 const EditarProyecto = () => {
   const { form, formData, updateFormData } = useFormData(null);
@@ -69,29 +71,51 @@ const EditarProyecto = () => {
         ref={form}
         className="flex flex-col items-right justify-center"
       >
-        <label htmlFor="nombre" className="flex flex-col my-3">
-          <span className="font-bold">Nombre del proyecto:</span>
-          <input
+        <PrivateComponent roleList={"ADMINISTRADOR"}>
+          <label htmlFor="nombre" className="flex flex-col my-3">
+            <span className="font-bold">Nombre del proyecto:</span>
+            <input
+              type="text"
+              name="nombre"
+              defaultValue={queryData.Proyecto.nombre}
+              disabled
+            />
+          </label>
+        </PrivateComponent>
+        <PrivateComponent roleList={"LIDER"}>
+          <Input
+            label="Nombre del proyecto:"
             type="text"
-            className="input"
+            name="nombre"
             defaultValue={queryData.Proyecto.nombre}
-            disabled
+            required={true}
           />
-        </label>
-        <label htmlFor="presupuesto" className="flex flex-col my-3">
-          <span className="font-bold">Presupuesto:</span>
-          <input
+        </PrivateComponent>
+        <PrivateComponent roleList={"ADMINISTRADOR"}>
+          <label htmlFor="presupuesto" className="flex flex-col my-3">
+            <span className="font-bold">Presupuesto:</span>
+            <input
+              type="text"
+              name="presupuesto"
+              defaultValue={queryData.Proyecto.presupuesto}
+              disabled
+            />
+          </label>
+        </PrivateComponent>
+        <PrivateComponent roleList={"LIDER"}>
+          <Input
+            label="Presupuesto del proyecto:"
             type="text"
-            className="input"
+            name="presupuesto"
             defaultValue={queryData.Proyecto.presupuesto}
-            disabled
+            required={true}
           />
-        </label>
+        </PrivateComponent>
         <label htmlFor="Fecha de inicio" className="flex flex-col my-3">
           <span className="font-bold">Fecha de inicio:</span>
           <input
             type="text"
-            className="input"
+            name="fechaInicio"
             defaultValue={queryData.Proyecto.fechaInicio}
             disabled
           />
@@ -100,25 +124,47 @@ const EditarProyecto = () => {
           <span className="font-bold">Fecha de finalización:</span>
           <input
             type="text"
-            className="input"
+            name="fechaFin"
             defaultValue={queryData.Proyecto.fechaFin}
             disabled
           />
         </label>
-        <DropDown
-          label="Estado del proyecto:"
-          name="estado"
-          defaultValue={queryData.Proyecto.estado}
-          required={true}
-          options={Enum_EstadoProyecto}
-        />
-        <DropDown
-          label="Fase del proyecto:"
-          name="fase"
-          defaultValue={queryData.Proyecto.fase}
-          required={true}
-          options={Enum_FaseProyecto}
-        />
+        <PrivateComponent roleList={"ADMINISTRADOR"}>
+          <DropDown
+            label="Estado del proyecto:"
+            name="estado"
+            defaultValue={queryData.Proyecto.estado}
+            required={true}
+            options={Enum_EstadoProyecto}
+          />
+          <DropDown
+            label="Fase del proyecto:"
+            name="fase"
+            defaultValue={queryData.Proyecto.fase}
+            required={true}
+            options={Enum_FaseProyecto}
+          />
+        </PrivateComponent>
+        <PrivateComponent roleList={"LIDER"}>
+          <label htmlFor="Estado" className="flex flex-col my-3">
+            <span className="font-bold">Estado del proyecto:</span>
+            <input
+              type="text"
+              name="estado"
+              defaultValue={queryData.Proyecto.estado}
+              disabled
+            />
+          </label>
+          <label htmlFor="Fase" className="flex flex-col my-3">
+            <span className="font-bold">Fase del proyecto:</span>
+            <input
+              type="text"
+              name="fase"
+              defaultValue={queryData.Proyecto.fase}
+              disabled
+            />
+          </label>
+        </PrivateComponent>
         <div className="flex">
           <div className="mr-10">
             <ButtonLoading

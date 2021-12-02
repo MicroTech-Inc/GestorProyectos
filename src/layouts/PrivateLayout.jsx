@@ -41,7 +41,7 @@ const PrivateLayout = () => {
       <div className='flex w-full h-full'>
         <div className='flex flex-col w-full h-full'>
           <Navbar/>
-          <div className='w-full h-full  overflow-y-scroll'>          
+          <div className='h-full  overflow-y-scroll'>          
           <Outlet />
           </div>
         </div>

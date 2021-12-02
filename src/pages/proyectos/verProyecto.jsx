@@ -7,8 +7,6 @@ import ButtonLoading from "components/ButtonLoading";
 import useFormData from "hooks/useFormData";
 import { toast } from "react-toastify";
 import { EDITAR_PROYECTO } from "graphql/proyectos/mutations";
-import DropDown from "components/Dropdown";
-import { Enum_EstadoProyecto, Enum_FaseProyecto } from "utils/enums";
 
 const VerProyecto = () => {
   const { form, formData, updateFormData } = useFormData(null);

@@ -24,9 +24,24 @@ const IndexProyectos = () => {
 
   return (
     <div className="flex flex-col justify-start mt-28 ml-14">
-      <div className="flex flex-col-reverse">
-        <h2 className="text-2xl font-bold mb-6">Listado de Proyectos</h2>
-        <i class="fas fa-folder-plus text-blue-900 hover:text-blue-400 cursor-pointer"></i>
+      <h2 className="text-2xl font-bold">Listado de Proyectos</h2>
+      <div className="mb-6">
+        <div className="flex flex-row justify-end space-x-4">
+          <input
+            placeholder="Buscar"
+            className="border-2 border-gray-700 px-3 py-1 mr-2 rounded-md focus:outline-none focus:border-indigo-200"
+          />
+          <div className="sidebar-col text-white border-gray-700 px-2 py-1 rounded-md">
+            <i className="fas fa-search" />
+          </div>
+          <PrivateComponent roleList={"LIDER"}>
+            <div className="sidebar-col text-white border-gray-700 px-2 py-1 rounded-md">
+              <Link to={"/proyectos/crear"}>
+                <i class="fas fa-folder-plus text-white hover:text-blue-400 cursor-pointer"></i>
+              </Link>
+            </div>
+          </PrivateComponent>
+        </div>
       </div>
       <table className="tabla">
         <thead>
