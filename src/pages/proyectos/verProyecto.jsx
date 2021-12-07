@@ -1,15 +1,12 @@
 import React from "react";
 import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery} from "@apollo/client";
 import { GET_PROYECTO } from "graphql/proyectos/queries";
 import ButtonLoading from "components/ButtonLoading";
-import useFormData from "hooks/useFormData";
 import { toast } from "react-toastify";
-import { EDITAR_PROYECTO } from "graphql/proyectos/mutations";
 
 const VerProyecto = () => {
-  const { form, formData, updateFormData } = useFormData(null);
   const { _id } = useParams();
 
   const {
@@ -22,36 +19,12 @@ const VerProyecto = () => {
 
   console.log(queryData);
 
-  const [
-    editarProyecto,
-    { data: mutationData, loading: mutationLoading, error: mutationError },
-  ] = useMutation(EDITAR_PROYECTO);
-
-  const submitForm = (e) => {
-    e.preventDefault();
-    console.log("fd", formData);
-    delete formData.rol;
-    editarProyecto({
-      variables: { _id, ...formData },
-    });
-  };
 
   useEffect(() => {
-    if (mutationData) {
-      toast.success("Proyecto modificado correctamente");
-      window.location.href = "/proyectos";
-    }
-  }, [mutationData]);
-
-  useEffect(() => {
-    if (mutationError) {
-      toast.error("Error modificando el proyecto");
-    }
-
     if (queryError) {
       toast.error("Error consultando el proyecto");
     }
-  }, [queryError, mutationError]);
+  }, [queryError]);
 
   if (queryLoading) return <div>Cargando....</div>;
 
@@ -62,9 +35,6 @@ const VerProyecto = () => {
       </Link>
       <h1 className="m-4 text-2xl font-bold text-center">Detalle del Proyecto</h1>
       <form
-        onSubmit={submitForm}
-        onChange={updateFormData}
-        ref={form}
         className="flex flex-col items-right justify-center"
       >
         <label htmlFor="nombre" className="flex flex-col my-3">
@@ -90,7 +60,7 @@ const VerProyecto = () => {
           <input
             type="text"
             className="input"
-            defaultValue={queryData.Proyecto.fechaInicio}
+            defaultValue={queryData.Proyecto.fechaInicio.slice(0,-14)}
             disabled
           />
         </label>
@@ -99,7 +69,7 @@ const VerProyecto = () => {
           <input
             type="text"
             className="input"
-            defaultValue={queryData.Proyecto.fechaFin}
+            defaultValue={queryData.Proyecto.fechaFin.slice(0,-14)}
             disabled
           />
         </label>
@@ -124,7 +94,6 @@ const VerProyecto = () => {
         <div className="flex">
           <Link to="/proyectos">
             <ButtonLoading
-              loading={mutationLoading}
               text="Regresar"
             />
           </Link>

@@ -24,6 +24,10 @@ const GET_PROYECTO = gql`
       fechaFin
       estado
       fase
+      objetivos {
+        tipo
+        descripcion
+      }
     }
   }
 `;

@@ -34,9 +34,12 @@ const EditarProyecto = () => {
   const submitForm = (e) => {
     e.preventDefault();
     console.log("fd", formData);
-    delete formData.rol;
+    formData.presupuesto = parseFloat(formData.presupuesto);
     editarProyecto({
-      variables: { _id, ...formData },
+      variables: {
+        _id,
+        campos: formData,
+      },
     });
   };
 
@@ -116,7 +119,7 @@ const EditarProyecto = () => {
           <input
             type="text"
             name="fechaInicio"
-            defaultValue={queryData.Proyecto.fechaInicio}
+            defaultValue={queryData.Proyecto.fechaInicio.slice(0,-14)}
             disabled
           />
         </label>
@@ -125,7 +128,7 @@ const EditarProyecto = () => {
           <input
             type="text"
             name="fechaFin"
-            defaultValue={queryData.Proyecto.fechaFin}
+            defaultValue={queryData.Proyecto.fechaFin.slice(0,-14)}
             disabled
           />
         </label>

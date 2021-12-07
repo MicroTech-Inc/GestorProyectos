@@ -12,15 +12,15 @@ import 'styles/tabla.css';
 import AuthLayout from 'layouts/AuthLayout';
 import Register from 'pages/auth/register';
 import Login from 'pages/auth/login';
-import { AuthContext } from 'context/authContext';
+import { AuthContext } from 'context/authContext'; 
 import jwt_decode from 'jwt-decode';
 import IndexInscripciones from 'pages/inscripciones';
-import IndexProyectos from 'pages/proyectos';
+import IndexProyectos from 'pages/proyectos/indexProyecto';
 import IndexAvances from 'pages/avances';
 import IndexPerfil from 'pages/Perfil';
-import EditarProyecto from 'pages/proyectos/editar';
+import EditarProyecto from 'pages/proyectos/editarProyecto';
 import VerProyecto from 'pages/proyectos/verProyecto';
-import CrearProyecto from 'pages/proyectos/crear';
+import CrearProyecto from 'pages/proyectos/crearProyecto';
 
 
 // import PrivateRoute from 'components/PrivateRoute';

@@ -23,17 +23,14 @@ const IndexProyectos = () => {
   if (loading) return <div>Cargando....</div>;
 
   return (
-    <div className="flex flex-col justify-start mt-28 ml-14">
+    <div className="mt-28 ml-14 mr-14">
       <h2 className="text-2xl font-bold">Listado de Proyectos</h2>
       <div className="mb-6">
-        <div className="flex flex-row justify-end space-x-4">
+        <div className="flex flex-row justify-end space-x-2">
           <input
             placeholder="Buscar"
             className="border-2 border-gray-700 px-3 py-1 mr-2 rounded-md focus:outline-none focus:border-indigo-200"
           />
-          <div className="sidebar-col text-white border-gray-700 px-2 py-1 rounded-md">
-            <i className="fas fa-search" />
-          </div>
           <PrivateComponent roleList={"LIDER"}>
             <div className="sidebar-col text-white border-gray-700 px-2 py-1 rounded-md">
               <Link to={"/proyectos/crear"}>
@@ -61,8 +58,8 @@ const IndexProyectos = () => {
               return (
                 <tr key={u._id}>
                   <td>{u.nombre}</td>
-                  <td>{u.fechaInicio}</td>
-                  <td>{u.fechaFin}</td>
+                  <td>{u.fechaInicio.slice(0,-14)}</td>
+                  <td>{u.fechaFin.slice(0,-14)}</td>
                   <td>{u.presupuesto}</td>
                   <td>{Enum_EstadoProyecto[u.estado]}</td>
                   <td>{Enum_FaseProyecto[u.fase]}</td>

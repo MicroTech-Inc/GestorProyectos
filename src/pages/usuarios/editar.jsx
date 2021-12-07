@@ -31,9 +31,9 @@ const EditarUsuario = () => {
     e.preventDefault();
     console.log('fd', formData);
     delete formData.rol;
-    editarUsuario({
-      variables: { _id, ...formData },
-    });
+    // editarUsuario({
+    //   variables: { _id, ...formData },
+    // });
   };
 
   useEffect(() => {
