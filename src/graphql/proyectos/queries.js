@@ -28,6 +28,10 @@ const GET_PROYECTO = gql`
         tipo
         descripcion
       }
+      lider {
+        nombre
+        identificacion
+      }
     }
   }
 `;

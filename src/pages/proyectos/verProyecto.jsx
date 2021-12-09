@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { useQuery} from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { GET_PROYECTO } from "graphql/proyectos/queries";
 import ButtonLoading from "components/ButtonLoading";
 import { toast } from "react-toastify";
@@ -19,7 +19,6 @@ const VerProyecto = () => {
 
   console.log(queryData);
 
-
   useEffect(() => {
     if (queryError) {
       toast.error("Error consultando el proyecto");
@@ -33,10 +32,10 @@ const VerProyecto = () => {
       <Link to="/proyectos">
         <i className="fas fa-arrow-left mr-96 mt-7 text-gray-600 cursor-pointer font-bold text-xl hover:text-gray-900" />
       </Link>
-      <h1 className="m-4 text-2xl font-bold text-center">Detalle del Proyecto</h1>
-      <form
-        className="flex flex-col items-right justify-center"
-      >
+      <h1 className="m-4 text-2xl font-bold text-center">
+        Detalle del Proyecto
+      </h1>
+      <form className="flex flex-col items-right justify-center">
         <label htmlFor="nombre" className="flex flex-col my-3">
           <span className="font-bold">Nombre del proyecto:</span>
           <input
@@ -60,7 +59,11 @@ const VerProyecto = () => {
           <input
             type="text"
             className="input"
-            defaultValue={queryData.Proyecto.fechaInicio.slice(0,-14)}
+            defaultValue={
+              queryData.Proyecto.fechaInicio != null
+                ? queryData.Proyecto.fechaInicio.slice(0, -14)
+                : queryData.Proyecto.fechaInicio
+            }
             disabled
           />
         </label>
@@ -69,7 +72,11 @@ const VerProyecto = () => {
           <input
             type="text"
             className="input"
-            defaultValue={queryData.Proyecto.fechaFin.slice(0,-14)}
+            defaultValue={
+              queryData.Proyecto.fechaFin != null
+                ? queryData.Proyecto.fechaFin.slice(0, -14)
+                : queryData.Proyecto.fechaFin
+            }
             disabled
           />
         </label>
@@ -91,11 +98,39 @@ const VerProyecto = () => {
             disabled
           />
         </label>
+        <label htmlFor="lider" className="flex flex-col my-3">
+          <span className="font-bold">Lider del proyecto:</span>
+          <input
+            type="text"
+            className="input"
+            defaultValue={queryData.Proyecto.lider.nombre}
+            //u.fechaInicio!=null? u.fechaInicio.slice(0,-14): u.fechaInicio
+            disabled
+          />
+        </label>
+        <label htmlFor="identificacionLider" className="flex flex-col my-3">
+          <span className="font-bold">
+            Identificación del lider del proyecto:
+          </span>
+          <input
+            type="text"
+            className="input"
+            defaultValue={queryData.Proyecto.lider.identificacion}
+            disabled
+          />
+        </label>
+        {/* <label htmlFor="objetivo" className="flex flex-col my-3">
+          <span className="font-bold">Objetivos del proyecto:</span>
+          <input
+            type="text"
+            className="input"
+            defaultValue={queryData.Proyecto.objetivos.tipo}
+            disabled
+          />
+        </label> */}
         <div className="flex">
           <Link to="/proyectos">
-            <ButtonLoading
-              text="Regresar"
-            />
+            <ButtonLoading text="Regresar" />
           </Link>
         </div>
       </form>

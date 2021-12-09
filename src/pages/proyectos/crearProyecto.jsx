@@ -6,46 +6,60 @@ import Input from "components/Input";
 import ButtonLoading from "components/ButtonLoading";
 import useFormData from "hooks/useFormData";
 import { toast } from "react-toastify";
-import { EDITAR_USUARIO } from "graphql/usuarios/mutations";
 import DropDown from "components/Dropdown";
 import { Enum_TipoObjetivo } from "utils/enums";
 import { nanoid } from "nanoid";
 import { ObjContext } from "context/objContext";
 import { useObj } from "context/objContext";
+import { CREAR_PROYECTO } from "graphql/proyectos/mutations";
+import { useUser } from "context/userContext";
 
 const CrearProyecto = () => {
   const { form, formData, updateFormData } = useFormData(null);
+  const { userData } = useUser();
+  const _id = userData._id;
 
-  // const [
-  //   editarUsuario,
-  //   { data: mutationData, loading: mutationLoading, error: mutationError },
-  // ] = useMutation(EDITAR_USUARIO);
+  const [
+    crearProyecto,
+    { data: mutationData, loading: mutationLoading, error: mutationError },
+  ] = useMutation(CREAR_PROYECTO);
+
+  useEffect(() => {
+    console.log("Data Mutacion", mutationData);
+  });
 
   const submitForm = (e) => {
     e.preventDefault();
 
-    formData.objetivos = Object.values(formData.objetivos);
-    formData.presupuesto = parseFloat(formData.presupuesto);
-    
-    console.log("fd", formData);
+    // formData.objetivos = Object.values(formData.objetivos);
+    // formData.presupuesto = parseFloat(formData.presupuesto);
 
+    console.log(formData);
+    console.log(_id);
+    crearProyecto({
+      variables: {
+        nombre: formData.nombre,
+        presupuesto: parseFloat(formData.presupuesto),
+        objetivos: Object.values(formData.objetivos),
+        lider: _id,
+      },
+    });
   };
 
-  // useEffect(() => {
-  //   if (mutationData) {
-  //     toast.success("Usuario modificado correctamente");
-  //     window.location.href = "/proyectos";
-  //   }
-  // }, [mutationData]);
+  useEffect(() => {
+    if (mutationData) {
+      toast.success("Proyecto creado correctamente");
+      window.location.href = "/proyectos";
+    }
+  }, [mutationData]);
 
-  // useEffect(() => {
-  //   if (mutationError) {
-  //     toast.error("Error creando el proyecto");
-  //   }
+  useEffect(() => {
+    if (mutationError) {
+      toast.error("Error creando el proyecto");
+    }
+  }, [mutationError]);
 
-  // }, [mutationError]);
-
-  // if (mutationLoading) return <div>Cargando....</div>;
+  if (mutationLoading) return <div>Cargando....</div>;
 
   return (
     <div className="flex flex-col w-full h-full items-center">
@@ -68,9 +82,43 @@ const CrearProyecto = () => {
         <Input
           label="Presupuesto:"
           type="text"
-          name="Presupuesto"
+          name="presupuesto"
           required={true}
         />
+        {/* <Input
+          label="Lider del proyecto:"
+          type="text"
+          name="lider"
+          defaultValue={userData._id}
+          required={true}
+        />
+        <Input
+          label="Identificacion del lider del proyecto:"
+          type="text"
+          name="identificacion"
+          defaultValue={userData.nombre}
+          required={true}
+        /> */}
+        <label htmlFor="lider" className="flex flex-col my-3">
+          <span className="font-bold">Lider del proyecto:</span>
+          <input
+            type="text"
+            className="Lider"
+            defaultValue={userData.nombre}
+            disabled
+          />
+        </label>
+        <label htmlFor="identificacion" className="flex flex-col my-3">
+          <span className="font-bold">
+            Identificación del lider del proyecto:
+          </span>
+          <input
+            type="text"
+            className="Identificacion"
+            defaultValue={userData.identificacion}
+            disabled
+          />
+        </label>
         <Objetivos />
         <div className="flex">
           <div className="mr-10">
@@ -100,7 +148,7 @@ const Objetivos = () => {
   };
 
   return (
-    <ObjContext.Provider value={{eliminarObjetivo}}>
+    <ObjContext.Provider value={{ eliminarObjetivo }}>
       <div>
         <span>Objetivos del proyecto</span>
         <i
@@ -123,13 +171,13 @@ const FormObjetivo = ({ id }) => {
   return (
     <div className="flex items-center">
       <Input
-        name={`nested||objetivo||${id}||descripcion`}
+        name={`nested||objetivos||${id}||descripcion`}
         label="Descripción"
         type="text"
         required={true}
       />
       <DropDown
-        name={`nested||objetivo||${id}||tipo`}
+        name={`nested||objetivos||${id}||tipo`}
         options={Enum_TipoObjetivo}
         label="Tipo de objetivo"
         required={true}

@@ -6,15 +6,22 @@ import { GET_PROYECTO } from "graphql/proyectos/queries";
 import ButtonLoading from "components/ButtonLoading";
 import useFormData from "hooks/useFormData";
 import { toast } from "react-toastify";
-import { EDITAR_PROYECTO } from "graphql/proyectos/mutations";
+import {
+  EDITAR_PROYECTO,
+  ACTIVAR_ESTADO,
+  TERMINAR_PROYECTO,
+  PROBLEMA_PROYECTO,
+} from "graphql/proyectos/mutations";
 import DropDown from "components/Dropdown";
 import { Enum_EstadoProyecto, Enum_FaseProyecto } from "utils/enums";
 import PrivateComponent from "components/PrivateComponent";
 import Input from "components/Input";
+import { useUser } from "context/userContext";
 
 const EditarProyecto = () => {
   const { form, formData, updateFormData } = useFormData(null);
   const { _id } = useParams();
+  const { userData } = useUser();
 
   const {
     data: queryData,
@@ -31,10 +38,48 @@ const EditarProyecto = () => {
     { data: mutationData, loading: mutationLoading, error: mutationError },
   ] = useMutation(EDITAR_PROYECTO);
 
+  const [
+    activarProyecto,
+    {
+      data: mutationDataActivar,
+      loading: mutationLoadingActivar,
+      error: mutationErrorActivar,
+    },
+  ] = useMutation(ACTIVAR_ESTADO);
+
+  const [
+    terminarProyecto,
+    {
+      data: mutationDataTerminar,
+      loading: mutationLoadingTerminar,
+      error: mutationErrorTerminar,
+    },
+  ] = useMutation(TERMINAR_PROYECTO);
+
+  const [
+    problemaProyecto,
+    {
+      data: mutationDataProblema,
+      loading: mutationLoadingProblema,
+      error: mutationErrorProblema,
+    },
+  ] = useMutation(PROBLEMA_PROYECTO);
+
   const submitForm = (e) => {
     e.preventDefault();
     console.log("fd", formData);
-    formData.presupuesto = parseFloat(formData.presupuesto);
+
+    if (formData.estado === "ACTIVO") {
+      activarProyecto({ variables: { _id } });
+    } else if (queryData.estado === "ACTIVO" && formData.fase === "TERMINADO") {
+      terminarProyecto({ variables: { _id } });
+    } else if (formData.estado === "INACTIVO") {
+      problemaProyecto({ variables: { _id } });
+    }
+
+    if (userData.rol === "LIDER") {
+      formData.presupuesto = parseFloat(formData.presupuesto);
+    }
     editarProyecto({
       variables: {
         _id,
@@ -44,21 +89,42 @@ const EditarProyecto = () => {
   };
 
   useEffect(() => {
-    if (mutationData) {
+    if (
+      mutationData ||
+      mutationDataActivar ||
+      mutationDataTerminar ||
+      mutationDataProblema
+    ) {
       toast.success("Proyecto modificado correctamente");
       window.location.href = "/proyectos";
     }
-  }, [mutationData]);
+  }, [
+    mutationData,
+    mutationDataActivar,
+    mutationDataTerminar,
+    mutationDataProblema,
+  ]);
 
   useEffect(() => {
-    if (mutationError) {
+    if (
+      mutationError ||
+      mutationErrorActivar ||
+      mutationErrorTerminar ||
+      mutationErrorProblema
+    ) {
       toast.error("Error modificando el proyecto");
     }
 
     if (queryError) {
       toast.error("Error consultando el proyecto");
     }
-  }, [queryError, mutationError]);
+  }, [
+    queryError,
+    mutationError,
+    mutationErrorActivar,
+    mutationErrorTerminar,
+    mutationErrorProblema,
+  ]);
 
   if (queryLoading) return <div>Cargando....</div>;
 
@@ -119,7 +185,11 @@ const EditarProyecto = () => {
           <input
             type="text"
             name="fechaInicio"
-            defaultValue={queryData.Proyecto.fechaInicio.slice(0,-14)}
+            defaultValue={
+              queryData.Proyecto.fechaInicio != null
+                ? queryData.Proyecto.fechaInicio.slice(0, -14)
+                : queryData.Proyecto.fechaInicio
+            }
             disabled
           />
         </label>
@@ -128,7 +198,11 @@ const EditarProyecto = () => {
           <input
             type="text"
             name="fechaFin"
-            defaultValue={queryData.Proyecto.fechaFin.slice(0,-14)}
+            defaultValue={
+              queryData.Proyecto.fechaFin != null
+                ? queryData.Proyecto.fechaFin.slice(0, -14)
+                : queryData.Proyecto.fechaFin
+            }
             disabled
           />
         </label>
