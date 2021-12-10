@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import Input from "components/Input";
 import ButtonLoading from "components/ButtonLoading";
@@ -85,20 +85,6 @@ const CrearProyecto = () => {
           name="presupuesto"
           required={true}
         />
-        {/* <Input
-          label="Lider del proyecto:"
-          type="text"
-          name="lider"
-          defaultValue={userData._id}
-          required={true}
-        />
-        <Input
-          label="Identificacion del lider del proyecto:"
-          type="text"
-          name="identificacion"
-          defaultValue={userData.nombre}
-          required={true}
-        /> */}
         <label htmlFor="lider" className="flex flex-col my-3">
           <span className="font-bold">Lider del proyecto:</span>
           <input

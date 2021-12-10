@@ -119,15 +119,19 @@ const VerProyecto = () => {
             disabled
           />
         </label>
-        {/* <label htmlFor="objetivo" className="flex flex-col my-3">
+        <div className="">
           <span className="font-bold">Objetivos del proyecto:</span>
-          <input
-            type="text"
-            className="input"
-            defaultValue={queryData.Proyecto.objetivos.tipo}
-            disabled
-          />
-        </label> */}
+          <div className="flex">
+            {queryData.Proyecto.objetivos.map((objetivo) => {
+              return (
+                <Objetivos
+                  tipo={objetivo.tipo}
+                  descripcion={objetivo.descripcion}
+                />
+              );
+            })}
+          </div>
+        </div>
         <div className="flex">
           <Link to="/proyectos">
             <ButtonLoading text="Regresar" />
@@ -137,5 +141,15 @@ const VerProyecto = () => {
     </div>
   );
 };
+
+const Objetivos = ({ tipo, descripcion }) => {
+  return (
+    <div>
+      <div>{tipo}</div>
+      <div>{descripcion}</div>
+    </div>
+  );
+};
+
 
 export default VerProyecto;

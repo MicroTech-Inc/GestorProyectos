@@ -28,24 +28,24 @@ const CREAR_PROYECTO = gql`
 `;
 
 const ACTIVAR_ESTADO = gql`
-  mutation ActivarEstado($id: String!) {
-    activarEstado(_id: $id) {
+  mutation ActivarEstado($_id: String!) {
+    activarEstado(_id: $_id) {
       _id
     }
   }
 `;
 
 const TERMINAR_PROYECTO = gql`
-  mutation TerminarProyecto($id: String!) {
-    terminarProyecto(_id: $id) {
+  mutation TerminarProyecto($_id: String!) {
+    terminarProyecto(_id: $_id) {
       _id
     }
   }
 `;
 
 const PROBLEMA_PROYECTO = gql`
-  mutation ProblemaProyecto($id: String!) {
-    problemaProyecto(_id: $id) {
+  mutation ProblemaProyecto($_id: String!) {
+    problemaProyecto(_id: $_id) {
       _id
     }
   }
