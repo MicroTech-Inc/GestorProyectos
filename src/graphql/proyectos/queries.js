@@ -10,6 +10,12 @@ const GET_PROYECTOS = gql`
       fechaFin
       estado
       fase
+      inscripciones {
+        estado
+        estudiante {
+          _id
+        }
+      }
     }
   }
 `;

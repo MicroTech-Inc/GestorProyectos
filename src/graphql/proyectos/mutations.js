@@ -51,4 +51,12 @@ const PROBLEMA_PROYECTO = gql`
   }
 `;
 
-export { EDITAR_PROYECTO, CREAR_PROYECTO, ACTIVAR_ESTADO, TERMINAR_PROYECTO, PROBLEMA_PROYECTO };
+const ACTIVAR_PROYECTO = gql`
+  mutation ActivarProyecto($_id: String!) {
+    activarProyecto(_id: $_id) {
+      _id
+    }
+  }
+`;
+
+export { EDITAR_PROYECTO, CREAR_PROYECTO, ACTIVAR_ESTADO, TERMINAR_PROYECTO, PROBLEMA_PROYECTO, ACTIVAR_PROYECTO };

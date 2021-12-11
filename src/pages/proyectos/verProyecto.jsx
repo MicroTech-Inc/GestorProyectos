@@ -104,7 +104,6 @@ const VerProyecto = () => {
             type="text"
             className="input"
             defaultValue={queryData.Proyecto.lider.nombre}
-            //u.fechaInicio!=null? u.fechaInicio.slice(0,-14): u.fechaInicio
             disabled
           />
         </label>
@@ -121,7 +120,7 @@ const VerProyecto = () => {
         </label>
         <div className="">
           <span className="font-bold">Objetivos del proyecto:</span>
-          <div className="flex">
+          <div className="">
             {queryData.Proyecto.objetivos.map((objetivo) => {
               return (
                 <Objetivos

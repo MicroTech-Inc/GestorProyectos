@@ -11,6 +11,7 @@ import {
   ACTIVAR_ESTADO,
   TERMINAR_PROYECTO,
   PROBLEMA_PROYECTO,
+  ACTIVAR_PROYECTO
 } from "graphql/proyectos/mutations";
 import DropDown from "components/Dropdown";
 import { Enum_EstadoProyecto, Enum_FaseProyecto } from "utils/enums";
@@ -21,6 +22,10 @@ import { nanoid } from "nanoid";
 import { ObjContext } from "context/objContext";
 import { useObj } from "context/objContext";
 import { Enum_TipoObjetivo } from "utils/enums";
+
+// const obtenerObjetivos = () => {
+//   //queryData
+// }
 
 const EditarProyecto = () => {
   const { form, formData, updateFormData } = useFormData(null);
@@ -43,7 +48,7 @@ const EditarProyecto = () => {
   ] = useMutation(EDITAR_PROYECTO);
 
   const [
-    activarProyecto,
+    activarEstado,
     {
       data: mutationDataActivar,
       loading: mutationLoadingActivar,
@@ -69,16 +74,27 @@ const EditarProyecto = () => {
     },
   ] = useMutation(PROBLEMA_PROYECTO);
 
+  const [
+    activarProyecto,
+    {
+      data: mutationDataProyecto,
+      loading: mutationLoadingProyecto,
+      error: mutationErrorProyecto,
+    },
+  ] = useMutation(ACTIVAR_PROYECTO);
+
   const submitForm = (e) => {
     e.preventDefault();
     console.log("fd", formData);
 
     if (formData.estado === "ACTIVO" && formData.fase === "NULO") {
-      activarProyecto({ variables: { _id } });
+      activarEstado({ variables: { _id } });
     } else if (formData.estado === "ACTIVO" && formData.fase === "TERMINADO") {
       terminarProyecto({ variables: { _id } });
     } else if (formData.estado === "INACTIVO") {
       problemaProyecto({ variables: { _id } });
+    }else if (formData.estado === "ACTIVO") {
+      activarProyecto({ variables: { _id }});
     }
 
     if (userData.rol === "LIDER") {
@@ -97,7 +113,8 @@ const EditarProyecto = () => {
       mutationData ||
       mutationDataActivar ||
       mutationDataTerminar ||
-      mutationDataProblema
+      mutationDataProblema ||
+      mutationDataProyecto
     ) {
       toast.success("Proyecto modificado correctamente");
       window.location.href = "/proyectos";
@@ -107,6 +124,7 @@ const EditarProyecto = () => {
     mutationDataActivar,
     mutationDataTerminar,
     mutationDataProblema,
+    mutationDataProyecto,
   ]);
 
   useEffect(() => {
@@ -114,7 +132,8 @@ const EditarProyecto = () => {
       mutationError ||
       mutationErrorActivar ||
       mutationErrorTerminar ||
-      mutationErrorProblema
+      mutationErrorProblema ||
+      mutationDataProyecto
     ) {
       toast.error("Error modificando el proyecto");
     }
@@ -128,6 +147,7 @@ const EditarProyecto = () => {
     mutationErrorActivar,
     mutationErrorTerminar,
     mutationErrorProblema,
+    mutationDataProyecto,
   ]);
 
   if (queryLoading) return <div>Cargando....</div>;
@@ -245,7 +265,7 @@ const EditarProyecto = () => {
               disabled
             />
           </label>
-          {/* <Objetivos /> */}
+          <Objetivos objetivos={queryData.Proyecto.objetivos} />
         </PrivateComponent>
         <div className="flex">
           <div className="mr-10">
@@ -268,59 +288,61 @@ const EditarProyecto = () => {
   );
 };
 
-// const Objetivos = () => {
-//   const [listaObjetivos, setListaObjetivos] = useState([]);
+const Objetivos = ({objetivos}) => {
+  console.log(objetivos)
+  const [listaObjetivos, setListaObjetivos] = useState(objetivos);
 
-//   const eliminarObjetivo = (id) => {
-//     setListaObjetivos(listaObjetivos.filter((el) => el.props.id !== id));
-//   };
 
-//   const componenteObjetivoAgregado = () => {
-//     const id = nanoid();
-//     return <FormObjetivo key={id} id={id} />;
-//   };
+  const eliminarObjetivo = (id) => {
+    setListaObjetivos(listaObjetivos.filter((el) => el.props.id !== id));
+  };
 
-//   return (
-//     <ObjContext.Provider value={{ eliminarObjetivo }}>
-//       <div>
-//         <span>Objetivos del proyecto</span>
-//         <i
-//           onClick={() =>
-//             setListaObjetivos([...listaObjetivos, componenteObjetivoAgregado()])
-//           }
-//           className="fas fa-plus rounded-full bg-indigo-500 hover:bg-indigo-400 text-white p-2 mx-2 cursor-pointer"
-//         />
-//         {listaObjetivos.map((objetivo) => {
-//           return objetivo;
-//         })}
-//       </div>
-//     </ObjContext.Provider>
-//   );
-// };
+  const componenteObjetivoAgregado = () => {
+    const id = nanoid();
+    return <FormObjetivo key={id} id={id} />;
+  };
 
-// const FormObjetivo = ({ id }) => {
-//   const { eliminarObjetivo } = useObj();
+  return (
+    <ObjContext.Provider value={{ eliminarObjetivo }}>
+      <div>
+        <span className="font-bold">Objetivos del proyecto</span>
+        <i
+          onClick={() =>
+            setListaObjetivos([...listaObjetivos, componenteObjetivoAgregado()])
+          }
+          className="fas fa-plus rounded-full bg-indigo-500 hover:bg-indigo-400 text-white p-2 mx-2 cursor-pointer"
+        />
+        {listaObjetivos.map((objetivo) => {
+          return objetivo;
+        })}
+      </div>
+    </ObjContext.Provider>
+  );
+};
 
-//   return (
-//     <div className="flex items-center">
-//       <Input
-//         name={`nested||objetivos||${id}||descripcion`}
-//         label="Descripción"
-//         type="text"
-//         required={true}
-//       />
-//       <DropDown
-//         name={`nested||objetivos||${id}||tipo`}
-//         options={Enum_TipoObjetivo}
-//         label="Tipo de objetivo"
-//         required={true}
-//       />
-//       <i
-//         onClick={() => eliminarObjetivo(id)}
-//         className="fas fa-minus mt-6 bg-red-500 text-white p-2 rounded-full cursor-pointer hover:bg-red-400"
-//       />
-//     </div>
-//   );
-// };
+const FormObjetivo = ({ id }) => {
+  const { eliminarObjetivo } = useObj();
+
+  return (
+    <div className="flex items-center">
+      <Input
+        name={`nested||objetivos||${id}||descripcion`}
+        label="Descripción"
+        type="text"
+        required={false}
+      />
+      <DropDown
+        name={`nested||objetivos||${id}||tipo`}
+        options={Enum_TipoObjetivo}
+        label="Tipo de objetivo"
+        required={false}
+      />
+      <i
+        onClick={() => eliminarObjetivo(id)}
+        className="fas fa-minus mt-6 bg-red-500 text-white p-2 rounded-full cursor-pointer hover:bg-red-400"
+      />
+    </div>
+  );
+};
 
 export default EditarProyecto;

@@ -1,18 +1,22 @@
 import React from "react";
 import { GET_PROYECTOS } from "graphql/proyectos/queries";
-import { useQuery } from "@apollo/client";
-import { useEffect } from "react";
+import { useMutation, useQuery } from "@apollo/client";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Enum_EstadoProyecto, Enum_FaseProyecto } from "utils/enums";
 import { Link } from "react-router-dom";
 import PrivateComponent from "components/PrivateComponent";
+import { Tooltip } from "@material-ui/core";
+import { CREAR_INSCRIPCION } from "graphql/inscripciones/mutations";
+import { useUser } from "context/userContext";
+import ButtonLoading from "components/ButtonLoading";
 
 const IndexProyectos = () => {
-  const { data, error, loading } = useQuery(GET_PROYECTOS);
+  const { data: queryData, error, loading } = useQuery(GET_PROYECTOS);
 
   useEffect(() => {
-    console.log("data servidor", data);
-  }, [data]);
+    console.log("data servidor", queryData);
+  }, [queryData]);
 
   useEffect(() => {
     if (error) {
@@ -53,19 +57,26 @@ const IndexProyectos = () => {
           </tr>
         </thead>
         <tbody>
-          {data &&
-            data.Proyectos.map((u) => {
+          {queryData &&
+            queryData.Proyectos.map((u) => {
               return (
                 <tr key={u._id}>
                   <td>{u.nombre}</td>
-                  <td>{u.fechaInicio!=null? u.fechaInicio.slice(0,-14): u.fechaInicio}</td>
-                  <td>{u.fechaFin!=null? u.fechaFin.slice(0,-14): u.fechaFin}</td>
+                  <td>
+                    {u.fechaInicio != null
+                      ? u.fechaInicio.slice(0, -14)
+                      : u.fechaInicio}
+                  </td>
+                  <td>
+                    {u.fechaFin != null ? u.fechaFin.slice(0, -14) : u.fechaFin}
+                  </td>
                   <td>{u.presupuesto}</td>
                   <td>{Enum_EstadoProyecto[u.estado]}</td>
+                  {console.log(u.estado.toString() === "INACTIVO")}
                   <td>{Enum_FaseProyecto[u.fase]}</td>
-                  <td>
+                  <td className="space-x-4">
                     <Link to={`/proyectos/ver/${u._id}`}>
-                      <i class="far fa-eye text-blue-900 hover:text-blue-400 cursor-pointer"></i>
+                      <i class="far fa-eye text-blue-900 hover:text-blue-400 cursor-pointer "></i>
                     </Link>
                     <PrivateComponent roleList={["ADMINISTRADOR", "LIDER"]}>
                       <Link to={`/proyectos/editar/${u._id}`}>
@@ -73,9 +84,11 @@ const IndexProyectos = () => {
                       </Link>
                     </PrivateComponent>
                     <PrivateComponent roleList={"ESTUDIANTE"}>
-                      <Link to={u._id}>
-                        <i className="fas fa-user-plus text-blue-900 hover:text-blue-400 cursor-pointer pl-4"></i>
-                      </Link>
+                      <InscripcionProyecto
+                        idProyecto={u._id}
+                        estado={u.estado}
+                        inscripciones={u.inscripciones}
+                      />
                     </PrivateComponent>
                   </td>
                 </tr>
@@ -85,6 +98,61 @@ const IndexProyectos = () => {
       </table>
     </div>
   );
+};
+
+const InscripcionProyecto = ({ idProyecto, estado, inscripciones }) => {
+  const [estadoInscripcion, setEstadoInscripion] = useState("");
+  const [crearInscripcion, { data, loading, error }] =
+    useMutation(CREAR_INSCRIPCION);
+  const { userData } = useUser();
+
+  useEffect(() => {
+    if (userData && inscripciones) {
+      const flt = inscripciones.filter(
+        (el) => el.estudiante._id === userData._id
+      );
+      if (flt.length > 0) {
+        setEstadoInscripion(flt[0].estado);
+      }
+    }
+  }, [userData, inscripciones]);
+
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+      toast.success("Inscripción creada con éxito");
+    }
+  }, [data]);
+
+  const confirmarInscripcion = () => {
+    crearInscripcion({
+      variables: { proyecto: idProyecto, estudiante: userData._id },
+    });
+  };
+
+  return (
+    <>
+    {estadoInscripcion !== '' ? (
+      // <span>Inscrito: {estadoInscripcion}</span>
+      <> </>
+    ) : (
+      <ButtonLoading
+        onClick={() => confirmarInscripcion()}
+        disabled={estado.toString() === "INACTIVO"}
+        loading={loading}
+        text="Inscribirme"
+      />
+    )}
+    </>
+    // <Tooltip title="Inscribirme a este proyecto" arrow>
+    //   <button
+    //     onClick={() => confirmarInscripcion()}
+    //     className="fas fa-user-plus text-blue-900 hover:text-blue-400 cursor-pointer pl-4"
+    //     disabled={estado.toString() === "INACTIVO"}
+    //   ></button>
+    // </Tooltip>
+  );
+
 };
 
 export default IndexProyectos;

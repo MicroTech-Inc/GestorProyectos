@@ -136,7 +136,7 @@ const Objetivos = () => {
   return (
     <ObjContext.Provider value={{ eliminarObjetivo }}>
       <div>
-        <span>Objetivos del proyecto</span>
+        <span className="font-bold">Objetivos del proyecto</span>
         <i
           onClick={() =>
             setListaObjetivos([...listaObjetivos, componenteObjetivoAgregado()])
