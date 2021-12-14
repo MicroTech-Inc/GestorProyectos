@@ -1,34 +1,34 @@
 import { gql } from '@apollo/client';
 
 const GET_AVANCES = gql`
-  query Avances {
-    Avances {
-      _id
-      fecha
-      descripcion
-      observaciones
-      proyecto{
-          _id
-      }
-      creadoPor{
-          _id
-      }
+  query AvanceLider {
+  avanceLider {
+    _id
+    fecha
+    proyecto {
+      nombre
     }
   }
+}
 `;
 
 const GET_AVANCE = gql`
-  query filtrarAvance($_id:String!){
-    filtrarAvance(_id:$_id) {
-      _id
-      fecha
-      descripcion
-      observaciones
-      proyecto
-      creadoPor
+query Query($_id: String!) {
+  detalleAvance(_id: $_id) {
+    _id
+    fecha
+    descripcion
+    observaciones
+    proyecto {
+      nombre
+    }
+    creadoPor {
+      nombre
     }
   }
+}
 `;
 
 
-export { GET_AVANCES, GET_AVANCE };
+
+export { GET_AVANCES, GET_AVANCE};
