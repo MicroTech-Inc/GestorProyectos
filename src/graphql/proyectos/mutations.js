@@ -59,4 +59,28 @@ const ACTIVAR_PROYECTO = gql`
   }
 `;
 
-export { EDITAR_PROYECTO, CREAR_PROYECTO, ACTIVAR_ESTADO, TERMINAR_PROYECTO, PROBLEMA_PROYECTO, ACTIVAR_PROYECTO };
+const EDITAR_OBJETIVO = gql`
+  mutation EditarObjetivo(
+    $idProyecto: String!
+    $indexObjetivo: Int!
+    $campos: camposObjetivo!
+  ) {
+    editarObjetivo(
+      idProyecto: $idProyecto
+      indexObjetivo: $indexObjetivo
+      campos: $campos
+    ) {
+      _id
+    }
+  }
+`;
+
+export {
+  EDITAR_PROYECTO,
+  CREAR_PROYECTO,
+  ACTIVAR_ESTADO,
+  TERMINAR_PROYECTO,
+  PROBLEMA_PROYECTO,
+  ACTIVAR_PROYECTO,
+  EDITAR_OBJETIVO,
+};

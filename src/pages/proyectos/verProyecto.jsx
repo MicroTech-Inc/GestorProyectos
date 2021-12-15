@@ -120,7 +120,7 @@ const VerProyecto = () => {
         </label>
         <div className="">
           <span className="font-bold">Objetivos del proyecto:</span>
-          <div className="">
+          <div className="p-5">
             {queryData.Proyecto.objetivos.map((objetivo) => {
               return (
                 <Objetivos
@@ -143,7 +143,7 @@ const VerProyecto = () => {
 
 const Objetivos = ({ tipo, descripcion }) => {
   return (
-    <div>
+    <div className="p-2">
       <div>{tipo}</div>
       <div>{descripcion}</div>
     </div>

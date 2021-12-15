@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import { Enum_EstadoProyecto, Enum_FaseProyecto } from "utils/enums";
 import { Link } from "react-router-dom";
 import PrivateComponent from "components/PrivateComponent";
-import { Tooltip } from "@material-ui/core";
 import { CREAR_INSCRIPCION } from "graphql/inscripciones/mutations";
 import { useUser } from "context/userContext";
 import ButtonLoading from "components/ButtonLoading";
