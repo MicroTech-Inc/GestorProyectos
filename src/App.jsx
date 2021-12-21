@@ -31,7 +31,7 @@ import jwt_decode from 'jwt-decode';
 //https://mintic-proyecto-back.herokuapp.com/graphql
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000/graphql',
+  uri: 'https://mintic-proyecto-back.herokuapp.com/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
