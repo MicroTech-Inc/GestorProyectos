@@ -35,7 +35,8 @@ const Index = () => {
         console.log("data servidor", data);
 
         if(data){
-        setTotalInscripciones(data.Inscripciones.length);
+          if(data.Inscripciones != null)
+          setTotalInscripciones(data.Inscripciones.length);
         }    
 
       }, [data]);
