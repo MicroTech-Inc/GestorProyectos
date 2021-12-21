@@ -15,6 +15,7 @@ const IndexProyectos = () => {
   const { data: queryData, error, loading } = useQuery(GET_PROYECTOS);
   const[busqueda, setBusqueda] = useState('');
   const[filtro, setFiltro] = useState([]);
+  const { userData } = useUser();
 
   useEffect(() => {
     console.log("data servidor", queryData);
@@ -108,7 +109,7 @@ const IndexProyectos = () => {
                     </Link>
                     <PrivateComponent roleList={["ADMINISTRADOR", "LIDER"]}>
                       <Link to={`/proyectos/editar/${u._id}`}>
-                        <i className="fas fa-pen text-yellow-600 hover:text-yellow-400 cursor-pointer pl-4" />
+                        {u.estado === "INACTIVO" && userData.rol === "LIDER" ? <></> : <i className="fas fa-pen text-yellow-600 hover:text-yellow-400 cursor-pointer pl-4"/>}
                       </Link>
                     </PrivateComponent>
                     <PrivateComponent roleList={"ESTUDIANTE"}>
